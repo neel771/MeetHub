@@ -392,6 +392,10 @@ export default function VideoMeetComponent() {
     getMedia();
   }
 
+  let handleLobbyKeyDown = (e) => {
+    if (e.key === "Enter" && username.trim()) connect();
+  }
+
 
 
   let getDisplayMedia = () => {
@@ -419,8 +423,13 @@ export default function VideoMeetComponent() {
   }
 
   let sendMessage = () => {
+    if (!message.trim()) return;
     socketRef.current.emit("chat-message", message, username);
     setMessage("");
+  }
+
+  let handleChatKeyDown = (e) => {
+    if (e.key === "Enter") sendMessage();
   }
 
   let handleEndCall = () => {
@@ -459,6 +468,7 @@ export default function VideoMeetComponent() {
                   id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={handleLobbyKeyDown}
                   placeholder="Name"
                 />
               </div>
@@ -484,7 +494,23 @@ export default function VideoMeetComponent() {
 
           {showModal ? <div className={styles.chatRoom}>
             <div className={styles.chatContainer}>
-              <h1>Chat</h1>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h1>Chat</h1>
+                <button
+                  onClick={() => setModal(false)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '1.4rem',
+                    cursor: 'pointer',
+                    color: '#6b7280',
+                    padding: '4px 8px',
+                    borderRadius: '6px',
+                    lineHeight: 1
+                  }}
+                  aria-label="Close chat"
+                >✕</button>
+              </div>
               <div className={styles.chattingDisplay}>
 
                 {messages.length !== 0 ? messages.map((item, index) => {
@@ -504,10 +530,19 @@ export default function VideoMeetComponent() {
                   className={styles.chatInput}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  onKeyDown={handleChatKeyDown}
                   placeholder="Type your message"
                 />
-                <button className={styles.chatSendButton} onClick={sendMessage} disabled={!message.trim()}>
-                  Send
+                <button
+                  className={styles.chatSendButton}
+                  onClick={sendMessage}
+                  disabled={!message.trim()}
+                  aria-label="Send message"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
                 </button>
               </div>
             </div>

@@ -1,6 +1,8 @@
 .meetVideoContainer {
   position: relative;
   min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
   background: rgb(1, 4, 48);
   padding-bottom: 140px;
 }
@@ -14,7 +16,7 @@
 
 .meetingStage {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 22px;
   padding: 18px;
   width: calc(100% - 36px);
@@ -86,10 +88,11 @@
 }
 
 .buttonContainers {
-  position: absolute;
+  position: fixed;
   left: 50%;
   transform: translateX(-50%);
   bottom: 18px;
+  z-index: 100;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -99,6 +102,8 @@
   border-radius: 999px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+  max-width: calc(100vw - 32px);
 }
 
 .buttonContainers button {
@@ -137,15 +142,20 @@
 }
 
 .chatRoom {
-  position: absolute;
-  height: 90vh;
+  position: fixed;
+  top: 0;
   right: 0;
+  height: 100vh;
   background: white;
-  border-radius: 10px;
+  border-radius: 10px 0 0 10px;
   width: 30vw;
+  min-width: 280px;
   padding-inline: 20px;
   box-shadow: -8px 0 20px rgba(0, 0, 0, 0.08);
   animation: chatSlideIn 0.35s ease-out;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatContainer {
@@ -486,99 +496,170 @@
   text-transform: uppercase;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== VIDEO MEET MOBILE RESPONSIVENESS ===== */
 @media (max-width: 768px) {
-  .lobbyContent {
-    padding: 44px 32px;
-    max-width: 95vw;
-    gap: 28px;
-    border-radius: 18px;
+  .meetVideoContainer {
+    padding-bottom: 110px;
   }
 
-  .lobbyStatusGrid {
+  .meetingStage {
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+    width: calc(100% - 24px);
   }
 
-  .lobbyHeader h2 {
-    font-size: 2.2rem;
-    letter-spacing: -0.7px;
+  .videoCard {
+    min-height: 220px;
+    border-radius: 16px;
   }
 
-  .lobbyHeader p {
-    font-size: 0.9rem;
-    letter-spacing: 0.4px;
+  .videoCardContent {
+    min-height: 180px;
+    padding: 12px;
   }
 
-  .lobbyButton {
-    padding: 16px 18px !important;
-    font-size: 0.95rem !important;
-    letter-spacing: 0.7px !important;
+  .buttonContainers {
+    gap: 8px;
+    padding: 8px 10px;
+    bottom: 12px;
   }
 
-  .lobbyInput input {
-    padding: 16px 18px !important;
-    font-size: 0.95rem !important;
+  .buttonContainers button {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
   }
 
-  .lobbyInputLabel {
-    font-size: 0.78rem;
-    letter-spacing: 0.4px;
+  .buttonContainers svg {
+    font-size: 1.2rem;
   }
 
-  .infoText {
-    font-size: 0.8rem;
-    letter-spacing: 0.3px;
+  /* Chat panel becomes full-screen overlay on mobile */
+  .chatRoom {
+    width: 100vw;
+    min-width: unset;
+    height: 100vh;
+    border-radius: 0;
+    top: 0;
+    right: 0;
   }
-}
 
-@media (max-width: 480px) {
+  .chatContainer {
+    padding-top: 16px;
+  }
+
+  .chatContainer h1 {
+    font-size: 1.1rem;
+  }
+
+  .conferenceView {
+    flex-direction: column;
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .conferenceView video {
+    width: 100%;
+    min-width: unset;
+    height: 25vh;
+    border-radius: 12px;
+  }
+
+  /* Lobby mobile fixes */
   .lobbyContainer {
     padding: 16px;
+    align-items: flex-start;
+    padding-top: 40px;
   }
 
   .lobbyContent {
-    padding: 36px 24px;
-    gap: 24px;
+    padding: 24px 20px;
+    gap: 20px;
     border-radius: 14px;
     max-width: 100%;
   }
 
   .lobbyHeader h2 {
-    font-size: 1.8rem;
-    letter-spacing: -0.6px;
+    font-size: 1.6rem;
+  }
+
+  .lobbyHeader p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lobbyContainer {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .lobbyContent {
+    padding: 20px 16px;
+    gap: 18px;
+    border-radius: 12px;
+    max-width: 100%;
+  }
+
+  .lobbyHeader h2 {
+    font-size: 1.4rem;
   }
 
   .lobbyHeader p {
     font-size: 0.85rem;
-    letter-spacing: 0.3px;
-    margin-top: 10px;
-  }
-
-  .lobbyInput input {
-    padding: 14px 16px !important;
-    font-size: 0.9rem !important;
   }
 
   .lobbyButton {
-    padding: 14px 16px !important;
+    padding: 12px 14px !important;
     font-size: 0.9rem !important;
-    letter-spacing: 0.6px !important;
+  }
+
+  .lobbyTextField {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .videoCard {
+    min-height: 180px;
+  }
+
+  .videoCardContent {
+    min-height: 140px;
+  }
+
+  .buttonContainers button {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  .buttonContainers svg {
+    font-size: 1.1rem;
+  }
+
+  .chatRoom {
+    padding-inline: 14px;
+  }
+
+  .chatInput {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .chatSendButton {
+    padding: 10px 14px;
+    font-size: 0.88rem;
   }
 
   .infoText {
     font-size: 0.75rem;
-    letter-spacing: 0.25px;
-  }
-
-  .lobbyInputLabel {
-    font-size: 0.7rem;
-    letter-spacing: 0.3px;
   }
 
   .feedbackMessage {
     font-size: 0.8rem;
     padding: 12px 14px;
-    letter-spacing: 0.3px;
   }
 
   .loadingSpinner {
@@ -587,4 +668,3 @@
     border-width: 2px;
   }
 }
-

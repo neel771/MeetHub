@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@livekit/components-react": "^2.9.20",
+    "@livekit/components-styles": "^1.2.0",
     "@mui/icons-material": "^7.3.6",
     "@mui/material": "^7.3.6",
     "@testing-library/dom": "^10.4.1",
@@ -13,6 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.13.2",
     "http-status": "^2.1.0",
+    "livekit-client": "^2.18.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.30.3",

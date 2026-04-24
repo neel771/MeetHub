@@ -55,6 +55,12 @@ export default function Authentication() {
     }
   }
 
+  let handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleAuth();
+    }
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -105,7 +111,7 @@ export default function Authentication() {
             <Box
               component="form"
               noValidate
-              //   onSubmit={handleSubmit}
+              onSubmit={(e) => { e.preventDefault(); handleAuth(); }}
               sx={{ mt: 1 }}
             >
               {formState === 1 ? <TextField
@@ -129,6 +135,7 @@ export default function Authentication() {
                 value={username}
                 autoFocus
                 onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
               <TextField
                 margin="normal"
@@ -140,16 +147,16 @@ export default function Authentication() {
                 type="password"
                 id="password"
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
 
               <p style={{ color: "red" }}>{error}</p>
 
               <Button
-                type="button"
+                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={handleAuth}
               >
                 {formState === 0 ? "Login" : "Register"}
               </Button>

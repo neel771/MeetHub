@@ -15,7 +15,11 @@ function HomeComponent() {
 
 
   let handleJoinVideoCall = async () => {
-    navigate(`/${meetingCode}`)
+    if (meetingCode.trim()) navigate(`/${meetingCode}`);
+  }
+
+  let handleKeyDown = (e) => {
+    if (e.key === "Enter") handleJoinVideoCall();
   }
 
   return (
@@ -49,7 +53,9 @@ function HomeComponent() {
             <TextField
               fullWidth
               label="Enter Meeting Code"
+              value={meetingCode}
               onChange={e => setMeetingCode(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
 
             <Button
