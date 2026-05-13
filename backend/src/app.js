@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
@@ -31,9 +32,7 @@ app.get("/home", (req, res) => {
 
 const start = async () => {
   app.set("mongo_user");
-  const connectionDB = await mongoose.connect(
-    "mongodb+srv://MeetHub5:MeetHub15@cluster0.zcm0uhw.mongodb.net/?appName=Cluster0"
-  );
+  const connectionDB = await mongoose.connect(process.env.MONGODB_URI);
   console.log(`MONGO Cnneted DB Host:${connectionDB.connection.host}`)
   server.listen(app.get("port"), () => {
     console.log("LISTENING on Port 8000");

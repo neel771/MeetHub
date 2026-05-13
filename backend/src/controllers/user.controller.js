@@ -1,5 +1,6 @@
 import httpStatus from "http-status";
 import { User } from "../models/user.model.js";
+import { Meeting } from "../models/meeting.model.js";
 import bcrypt,{hash} from "bcrypt"
 import crypto from "crypto";
 
@@ -60,5 +61,39 @@ const register = async(req, res)=>{
 
 
 
- 
-export {login, register}
+// Get Meeting History
+const getUserHistory = async (req, res) => {
+    const { token } = req.query;
+    try {
+        const user = await User.findOne({ token });
+        if (!user) {
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid token" });
+        }
+        const meetings = await Meeting.find({ user_id: user._id }).sort({ date: -1 });
+        return res.status(httpStatus.OK).json(meetings);
+    } catch (e) {
+        return res.status(500).json({ message: `Something went wrong ${e}` });
+    }
+};
+
+// Add Meeting to History
+const addToHistory = async (req, res) => {
+    const { token, meetingCode } = req.body;
+    try {
+        const user = await User.findOne({ token });
+        if (!user) {
+            return res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid token" });
+        }
+        const newMeeting = new Meeting({
+            user_id: user._id,
+            meetingCode: meetingCode,
+            date: new Date()
+        });
+        await newMeeting.save();
+        return res.status(httpStatus.CREATED).json({ message: "Meeting added to history" });
+    } catch (e) {
+        return res.status(500).json({ message: `Something went wrong ${e}` });
+    }
+};
+
+export {login, register, addToHistory, getUserHistory}
